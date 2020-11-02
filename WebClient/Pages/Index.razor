@@ -1,1 +1,64 @@
 ﻿@page "/"
+<!--@using Blazor.DragDrop.Core;-->
+@*@typeparam TItem*@
+
+
+<!--<h1>Blazor Drag and Drop Example1</h1>
+<div class="row">
+    <div class="col-md-4 ">
+        <Dropzone>
+            <Draggable>
+                <li class="list-group-item">First Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Second Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Third Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Fourth Item</li>
+            </Draggable>
+        </Dropzone>
+    </div>
+    <div class="col-md-4 ">
+    </div>
+    <div class="col-md-4 ">
+        <Dropzone>
+            <Draggable>
+                <li class="list-group-item">First Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Second Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Third Item</li>
+            </Draggable>
+            <Draggable>
+                <li class="list-group-item">Fourth Item</li>
+            </Draggable>
+        </Dropzone>
+    </div>
+</div>-->
+@*@typeparam T
+@using Blazor.DragDrop
+@inject Services.DragAndDropService DragAndDropService
+<div draggable="true" @ondragstart="@OnDragStart">
+    @ChildContent
+</div>
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Zone { get; set; }
+
+    [Parameter]
+    public T Data { get; set; }
+
+    void OnDragStart()
+    {
+        // Notify the DragAndDropService what the current Data and Zone are.
+        DragAndDropService.StartDrag(Data, Zone);
+    }
+}*@

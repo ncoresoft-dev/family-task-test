@@ -12,6 +12,7 @@ using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using WebClient.Abstractions;
 using WebClient.Services;
+using Plk.Blazor.DragDrop;
 
 namespace WebClient
 {
@@ -28,6 +29,7 @@ namespace WebClient
                })
                 .AddBootstrapProviders()
                 .AddFontAwesomeIcons();
+            builder.Services.AddBlazorDragDrop();
 
             builder.RootComponents.Add<App>("app");
 
@@ -36,6 +38,8 @@ namespace WebClient
             builder.Services.AddHttpClient("FamilyTaskAPI", client => client.BaseAddress = new Uri("https://localhost:5001/api/"));
             builder.Services.AddSingleton<IMemberDataService, MemberDataService>();
             builder.Services.AddSingleton<ITaskDataService, TaskDataService>();
+            //builder.Services.AddScoped(typeof(DragDropService<>));
+            builder.Services.AddSingleton<StateContainer>();
 
             var host = builder.Build();
 

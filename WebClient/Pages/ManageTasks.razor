@@ -5,20 +5,23 @@
 @using WebClient.Shared.Models
 @using WebClient.Components
 @using WebClient.Shared.Components
+@using Domain.ClientSideModels
 @inject IMemberDataService memberService;
 @inject ITaskDataService taskDataService;
-
-@if(isLoaded) {
+@inject WebClient.Services.StateContainer StateContainer
+@if (isLoaded)
+{
     <div class="page-wrapper row m-0 col-12 p-0">
         <div class="col-4 p-0">
             <LeftMenu />
         </div>
         <div class="col-8 p-0">
-            @if (showLister) {
+            @if (showLister)
+            {
                 <div class="col-10 offset-1 pt-5">
                     <div class="row m-0">
                         <Field class="col-9 p-0 custom-input">
-                            <TextEdit Placeholder="Enter New Task" @bind-text="@newTask"/>
+                            <TextEdit Placeholder="Enter New Task" @bind-text="@newTask" />
                         </Field>
                         <div class="col-3 p-0 text-right">
                             <Button class="add-btn px-4" @onclick="@OnAddItem">Add</Button>
@@ -29,7 +32,8 @@
                     <TaskListerComponent />
                 </div>
             }
-            @if(false) {
+            @if (false)
+            {
                 <div class="col-10 offset-1 pt-5">
                 </div>
             }
@@ -39,7 +43,8 @@
 
 @code {
 
-    public List<MemberVm> members;
+    public MenuItem member;
+    public TaskVm task { get; set; }
     public string newTask;
 
 
@@ -53,10 +58,7 @@
         return base.OnInitializedAsync();
     }
 
-
-    
-
-    private void OnAddItem()
+    private async void OnAddItem()
     {
         var task = new TaskModel()
         {
@@ -71,8 +73,51 @@
         {
             task.Member = memberService.SelectedMember.Id;
         }
-        taskDataService.AddTask(task);
+        else
+        {
+            task.Member = null;
+        }
+        Boolean data = await taskDataService.AddTask(task);
+        if (data)
+        {
+            if (memberService.SelectedMember != null)
+            {
+                memberService.SelectMember(task.Member != null ? (Guid)task.Member : Guid.Empty);
+            }
+            else
+            {
+                memberService.SelectNullMember();
+            }
+        }
         StateHasChanged();
     }
+
+    public void DragStart(TaskVm item)
+    {
+        StateContainer.SetTask(item);
+    }
+
+    public async void OnDrop(MenuItem item)
+    {
+        TaskVm taskVm = new TaskVm();
+        if (StateContainer.Task != null && StateContainer.Task.Id != Guid.Empty)
+        {
+            Boolean data = await taskDataService.AssignTask(item, StateContainer.Task);
+            if (data)
+            {
+                if (memberService.SelectedMember != null)
+                {
+                    memberService.SelectMember(item.referenceId != null ? (Guid)item.referenceId : Guid.Empty);
+                }
+                else
+                {
+                    memberService.SelectNullMember();
+                }
+            }
+        }
+        StateContainer.Task = taskVm;
+    }
+
+
 
 }

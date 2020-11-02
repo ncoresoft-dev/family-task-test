@@ -3,6 +3,7 @@
 
 @namespace WebClient.Components
 @inject IMemberDataService memberDataService
+@inject HttpClient Http
 
 
 <style>
@@ -12,12 +13,14 @@
         line-height: 48px;
         font-family: "Poppins SemiBold";
     }
+
     .create-wrapper label {
         color: #000000;
         font-size: 24px;
         line-height: 36px;
         font-family: "Poppins Light";
     }
+
     .create-wrapper .avtar {
         width: 48px;
         height: 48px;
@@ -25,25 +28,30 @@
         display: inline-block;
         cursor: pointer;
     }
+
     @@media(max-width: 1400px) {
         .create-wrapper .header {
             font-size: 24px;
             line-height: 32px;
         }
+
         .create-wrapper label {
             font-size: 16px;
             line-height: 24px;
         }
+
         .create-wrapper .avtar {
             width: 32px;
             height: 32px;
         }
     }
+
     @@media(max-width: 767.98px) {
         .create-wrapper .header {
             font-size: 16px;
             line-height: 24px;
         }
+
         .create-wrapper .avtar {
             width: 16px;
             height: 16px;
@@ -57,23 +65,23 @@
         <div class="row m-0 col-12 p-0">
             <Field class="col-6 custom-input">
                 <FieldLabel>First Name</FieldLabel>
-                <TextEdit @bind-Text="@member.FirstName"/>
+                <TextEdit @bind-Text="@member.FirstName" />
             </Field>
             <Field class="col-6 custom-input">
                 <FieldLabel>Last Name</FieldLabel>
-                <TextEdit @bind-Text="@member.LastName"/>
+                <TextEdit @bind-Text="@member.LastName" />
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
             <Field class="col-12 custom-input">
                 <FieldLabel>Email Address</FieldLabel>
-                <TextEdit @bind-Text="@member.Email"/>
+                <TextEdit @bind-Text="@member.Email" />
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
             <Field class="col-12 custom-input">
                 <FieldLabel>Roles</FieldLabel>
-                <TextEdit @bind-Text="@member.Roles"/>
+                <TextEdit @bind-Text="@member.Roles" />
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
@@ -95,7 +103,7 @@
                         {
                             <Button class="add-btn px-3" @onclick="@OnUpdateClick">Update Member</Button>
                         }
-                        
+
                     </div>
                 </div>
             </Field>
